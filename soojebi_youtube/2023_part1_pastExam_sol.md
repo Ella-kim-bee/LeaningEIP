@@ -187,76 +187,126 @@ int main() {
 ---
 
 #### 11
-> 디자인 패턴문제
-보기에 생성(Builder, Singleton, Abstract Factory?)
-구조(Bridge, Decorater, Facade, Proxy ..)
-행위(Observer, Moderator, Visitor.. ) 일부가 주어지고 밑에 설명 3~4개 있었음
+> 객체의 대리자를 이용하여 원래 객체의 작업을 대신 처리하는 디자인 패턴
+- <보기>
+  - 생성(Builder:조립, Prototype:원형 복사 Singleton:객체 하나 생성, Abstract Factory:구체적인 클래스 의존X)
+  - 구조(Bridge:기능-구현 연결, Decorater:기능 추가, Facade:단순한 iterface,  Flyweight:클래스 경량화, Proxy:대리객체, Composite:부분-전체 구조, Adapter:중간 역할(서로 맞춰줌 220v-110v 연결)..)
+  - 행위(Observer:상태변경->다른객체연락, Miderator:중재자(복잡한, 사건 경찰중재느낌), Visitor:클래스 돌아다님, Strategy:캡슐화된 클래스 필요시 교환.. ) 일부가 주어지고 밑에 설명 3~4개 있었음
 ​
-객체의 대리자를 이용하여 원래 객체의 작업을 대신 처리하는 디자인 패턴
+> sol
+- answer : Proxy
+
 ---
 
 #### 12
-> 튜플, 릴레이션 인스턴스, 카디널리티
+> DB관련 내용
+- 튜플 : 테이블 내의 행, 레코드, 중복 허용
+- (릴레이션) 인스턴스 : 실제로 저장된 데이터의 집합
+- (릴레이션) 스키마 : 속성의 집합
+- 카디널리티 : 특정 데이터 집합의 유니크한 값의 개수, 튜플 개수
 ---
 
 #### 13
 > [학생] 릴레이션에서 학생 이름(컬럼 명)이'민수'인 튜플을 삭제하는 쿼리를 작성하여라 (sql delete 문제)
+```sql
+DELETE FROM 학생 WHERE 이름='민수';
+```
 ---
 
 #### 14
-> 버블정렬문제(변수로 작성)
-```c
-void swap(int[] a, int idx1, int idx2){
-  int t = idx1;
-  a[idx1] = a[idx2];
-  a[1번] = t;
-}
-void Usort(int[] a, int len){
-  버블정렬 코드
+> 버블정렬문제(변수명로 작성)
+```java
+class Soogebi{
+  static void swap(int[] a, int idx1, int idx2){
+    int t = idx1;
+    a[idx1] = a[idx2];
+    a[1번] = t; // 1번 == idx2
+  }
+  static void Usort(int[] a, int len){ // Usort(item, 2번) int[] a == item, 2번 == int형 변수 == nx
+    // 버블정렬 코드
+    for(int i=0;i<len;i++){
+      for(int j=0;j<len-i-1;j++){
+        if(a[j]>a[j+1]){
+          swap(a, j, j+1);
+        }
+      }
+    }
+  }
 }
 ​
-int main(){
-  int nx = 5;
-  ....
-  Usort(a, 2번문제);
+public static void main(String[] args){
+  int []item = {5,4,9,1,3,7}; // item[0] == 5, ..., item[5] == 7, 정수이기때문에 item[6] == NULL 없음, string일 경우에만 마지막에 NULL 붙음
+  int nx = 6;
+  Usort(item, 2번); // 2번 == nx
+  for(int data : item){
+    System,out.print(data+"");
+  }
 }
 ```
+
+> sol
+```java
+static void swap(a, b, c){
+  c = a;
+  a = b;
+  b = c;
+}
+// swap 패턴 : '//\' 모양으로 같은 값이어야 함
+// a[0] <-> a[1], a[1] <-> a[2], ...
+```
+- answer : 1번: idx2/ 2번: nx
 ---
 
 #### 15
 ```python
 a = {'한국', '중국', '일본'}
-a.add('베트남')
-a.add('중국')
-a.remove('일본')
-a.update({'홍콩', '한국', '태국'})
+a.add('베트남') # a = {'한국', '중국', '일본', '베트남'}
+a.add('중국') # a = {'한국', '중국', '일본', '베트남', '중국'} => a = {'한국', '중국', '일본', '베트남'}
+a.remove('일본') # a = {'한국', '중국', '베트남'}
+a.update({'홍콩', '한국', '태국'}) # a = {'한국', '중국', '베트남', '홍콩', '한국', '태국'} => a = {'한국', '중국', '베트남', '홍콩', '태국'}
 
 print(a)
 ```
+
+> sol
+- python 은 자료형에 주목
+  - { } : 세트형, 중복허용X, print할 때 {}에 감싸서 써줘야함
+- answer : {'한국', '중국', '베트남', '홍콩', '태국'}
 ---
 
 #### 16
-> sql문제 group by사용
-(조건: where사용하지 말 것. 세미콜론 생락가능,
-group by와 having사용. 집계함수 사용
-)
+> sql문제
+> ISO/ISE 9075 : 데이터베이스 표준
+(조건: where사용하지 말 것. 세미콜론 생락가능, group by와 having사용. 집계함수 사용)
+
+> sol
+```sql
+-- 셀프(웨) 구해오 / GROUP BY 컬럼명은 SELECT 컬럼명과 동일하게 적기
+SELECT 과목, MIN(점수) AS 최소점수, MAX(점수) AS 최대점수
+FROM 성적
+GROUP BY 과목
+HAVING AVG(과목) >= 90;
+```
 ---
 
 #### 17
+> Java car, vehicle 상속
 ```java
-Java car, vehicle 상속
 abstact class Vehicle {
   String name;
   abstract public String getName(String val);
   ​
   public String getName() {
-    return "Vehicle name: " + name;
+    return "Vehicle name: " + name; // Vehicle name: Spark
+  }
+  public void setName(String val) {
+    name = val; // name = 'Spark'
   }
 }
 ​
 class Car extends Vehicle {
   public Car(String val) {
-    name=super.name=val;
+    setName(val); // setName이 Car 내부에 없으니까 부모인 Vehicle 내부에서 찾기
   }
   public String getName(String val) {
     return "Car name:" + val;
@@ -268,53 +318,97 @@ class Car extends Vehicle {
 ​
 public class Test {
   public static void main(String[] args) {
-    Vehicle obj = new Car("Spark");
-    System.out.println(obj.getName());
+    Vehicle obj = new Car("Spark"); // obj에 Car가 생성됨 => 부모 Vehicle 생성자 호출 -> 자식 Car 생성자 호출
+    System.out.println(obj.getName()); // 파라미터 없으니까 부모 Vehicle의 getName()을 호출, 만약에 string이 있었으면 Car 내부에 있는 String getName(String val) 호출
   }
 }
 ```
+
+> sol
+```mermaid
+classDiagram
+  Vehicle <|-- Car
+  Vehicle : String name
+  Vehicle: getName(String val)
+  Vehicle: setName(String val)
+  class Car{
+    Car(String val)
+    getName(String val)
+    getName(byte val[])
+  }
+```
+- answer : Vehicle name: Spark
 ---
 
 #### 18
-> 외부 개념 내부스키마
+> 스키마
+- 외부 : 사용자, 개발자 관점, 논리적 구조, 사용자 뷰
+- 개념 : DB 전체적인 논리적 구조, 전체적인 뷰
+- 내부 : 물리적 저장 장치, DB에 저장될 레코드 형식 정의
+  ```mermaid
+  flowchart LR
+    A[USER]
+    A'[USER]
+    A''[USER]
+    B{외부스키마}
+    B'{외부스키마}
+    B''{외부스키마}
+    C{개념스키마}
+    D{내부스키마}
+    F[(디스크)]
+    A-->B
+    A'-->B'
+    A''-->B''
+    B-->C
+    B'-->C
+    B''-->C
+    C-->D
+    D-->F
+  ```
 ---
 
 #### 19
 > 화이트박스문제 (분기 커버리지)
+- 분기 커버리지 == 결정 커버리지
+  - 결정 포인트에서 조건식이 한 번씩은 T/F, 🔶모양
+
+> sol
+- answer : T,T: 1234561 / F,F: 124567 or T,F: 1234567 / F,T: 124561
 ---
 
 #### 20
 ```java
-JAVA get x
 class Parent {
   int x = 100;
   ​
   Parent() {
-    this(500);
+    this(500); // this는 자기 자신 생성자 호출하는데 파라미터 받는 생성자 호출
   }
-  Parent(int x) {
-    this.x = x;
+  Parent(int x) { // this(500)에 의해서 호출
+    this.x = x; // this.x = 500
   }
   int getX() {
-    return x;
+    return x; // 어떤 클래스의 내부에 있느냐에 따라 x 결정, Parent 내부에 있기 때문에 x == 500
   }
 }
 class Child extends Parent {
   int x = 4000;
 
   Child() {
-    this(5000);
+    this(5000); // this는 자기 자신 생성자 호출하는데 파라미터 받는 생성자 호출
   }
-  Child(int x) {
-    this.x = x;
+  Child(int x) { // this(5000)에 의해서 호출
+    this.x = x; // this.x = 5000
   }
 }
 ​
 public class Main {
   public static void main(String[] args) {
-    Child obj = new Child();
-    System.out.println(obj.getX());
+    Child obj = new Child(); // new 생성자 호출 => 부모 Parent의 Parent() 호출 -> 자식 Child의 Child() 호출
+    System.out.println(obj.getX()); // Child에 getX()가 없으니까 부모 Parent의 getX()호출
   }
 }
 ```
+> sol
+- answer : 500
 ---
